@@ -6,7 +6,7 @@
     </div>
 </footer>
 <!-- Main JS -->
-<script src="<?php echo $base_url; ?>js/main.js"></script>
+<script src="<?php echo $base_url; ?>js/main.js?v=<?php echo filemtime(__DIR__ . '/../js/main.js'); ?>"></script>
 </body>
 
 </html>

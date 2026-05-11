@@ -1,8 +1,9 @@
 <div class="card" id="autoreFormContainer">
     <h2 id="formTitle">Aggiungi Nuovo Autore</h2>
-    <form id="autoreForm">
+    <form id="autoreForm" method="POST" enctype="multipart/form-data">
         <input type="hidden" name="action" id="action" value="insert">
         <input type="hidden" name="codice" id="codice" value="">
+        <input type="hidden" name="currentPathImmagine" id="currentPathImmagine" value="">
         
         <div class="d-flex gap-1 mb-1">
             <div class="form-group" style="flex: 1;">
@@ -38,6 +39,23 @@
                 <label for="dataMorte">Data di Morte</label>
                 <input type="date" id="dataMorte" name="dataMorte" class="form-control">
             </div>
+        </div>
+
+        <div class="form-group mb-1">
+            <label for="fotoAutore">Immagine Autore (opzionale)</label>
+            <input type="file" id="fotoAutore" name="fotoAutore" class="form-control" accept=".jpg,.jpeg,.png,.webp,.gif,image/*">
+            <small style="color: var(--text-secondary);">Formati supportati: JPG, PNG, WEBP, GIF. Salvata in <code>assets/img/autori</code>.</small>
+        </div>
+
+        <div id="currentImageContainer" class="form-group mb-1" style="display: none;">
+            <label>Immagine attuale</label>
+            <div style="margin: 0.5rem 0;">
+                <img id="currentImagePreview" src="" alt="Immagine autore corrente" style="max-width: 180px; width: 100%; height: auto; border-radius: 8px; border: 1px solid #ddd;">
+            </div>
+            <label style="display: inline-flex; gap: 0.5rem; align-items: center;">
+                <input type="checkbox" id="removeImage" name="removeImage" value="1">
+                Elimina immagine attuale
+            </label>
         </div>
 
         <div class="mt-1">

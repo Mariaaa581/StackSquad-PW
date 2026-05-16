@@ -14,6 +14,14 @@ Si possono consultare le pagine di elenco e dettaglio, e sulla tabella Autore
 sono disponibili tutte le operazioni CRUD (inserimento, lettura, modifica,
 eliminazione) con ricerca.
 
+## Utente target
+
+L'applicazione è pensata per il personale del museo (curatore o amministratore
+del catalogo), che ha bisogno di inserire, modificare ed eliminare gli autori e
+di tenere aggiornate le informazioni sulle opere, le sale e i temi. Un utente
+generico (visitatore) può comunque consultare gli elenchi e le pagine di
+dettaglio per vedere quali opere ci sono e in quali sale sono esposte.
+
 ## Tecnologie usate
 
 - PHP per la parte server e la connessione al database (PDO).
@@ -51,6 +59,15 @@ tabelle:
   ON DELETE CASCADE), espostaInSala verso Sala.
 
 Lo script contiene anche dei dati di esempio (circa 100 autori e 200 opere).
+
+## Modifiche al database
+
+Rispetto allo schema originale dell'esercizio "Ex 1 - Museo", abbiamo aggiunto
+una sola colonna: `pathImmagine` (VARCHAR) nelle tabelle **Autore** e **Opera**,
+per poter salvare il percorso dell'immagine caricata dall'utente. La colonna è
+opzionale (può essere NULL) e lo script `museo.sql` la aggiunge automaticamente
+anche se il database esiste già. Le tabelle, le chiavi e le relazioni originali
+non sono state modificate.
 
 ## Il CRUD di Autore
 

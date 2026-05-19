@@ -134,8 +134,9 @@ $(document).ready(function() {
         });
     });
 
-    // Handle Edit Button Click (populate form)
-    $('.edit-btn').on('click', function() {
+    // Handle Edit Button Click (populate form) - delegato cosi funziona
+    // anche dopo che la tabella viene ricaricata via AJAX
+    $(document).on('click', '.edit-btn', function() {
         var codice = $(this).data('codice');
         
         // Fetch data via AJAX
@@ -189,8 +190,8 @@ $(document).ready(function() {
         handleTipoChange();
     });
 
-    // Handle Delete Button Click
-    $('.delete-btn').on('click', function() {
+    // Handle Delete Button Click - delegato (vedi sopra)
+    $(document).on('click', '.delete-btn', function() {
         var codice = $(this).data('codice');
         var nome = $(this).data('nome');
         
@@ -211,5 +212,31 @@ $(document).ready(function() {
             });
         }
     });
+
+    // Ricerca dinamica autori: aggiorna la tabella via AJAX senza
+    // ricaricare la pagina (filtro dinamico / aggiornamento parziale)
+    var $searchForm = $('#searchForm');
+    if ($searchForm.length) {
+        var searchTimer;
+
+        function loadAutori(q) {
+            $.get('autori.php', { q: q, ajax: 1 }, function(html) {
+                $('#autoriTable').replaceWith(html);
+            });
+        }
+
+        $searchForm.find('input[name="q"]').on('input', function() {
+            var q = $(this).val();
+            clearTimeout(searchTimer);
+            searchTimer = setTimeout(function() {
+                loadAutori(q);
+            }, 300);
+        });
+
+        $searchForm.on('submit', function(e) {
+            e.preventDefault();
+            loadAutori($(this).find('input[name="q"]').val());
+        });
+    }
 
 });

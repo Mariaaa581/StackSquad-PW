@@ -1,10 +1,12 @@
 <?php
 require_once '../config/db.php';
 $base_url = '/museo_stacksquad/';
-include '../includes/header.php';
 
-// Handle Search Query
+// Se la richiesta arriva via AJAX (?ajax=1) restituiamo solo la tabella,
+// cosi la ricerca aggiorna i risultati senza ricaricare la pagina.
 $search = $_GET['q'] ?? '';
+$isAjax = isset($_GET['ajax']);
+
 $query = "SELECT * FROM Autore";
 $params = [];
 
@@ -23,11 +25,16 @@ $query .= " ORDER BY codice ASC";
 $stmt = $pdo->prepare($query);
 $stmt->execute($params);
 $autori = $stmt->fetchAll();
+
+if (!$isAjax) {
+    include '../includes/header.php';
+}
 ?>
 
+<?php if (!$isAjax): ?>
 <div class="d-flex justify-between align-center mb-1 mt-1">
     <h1>Gestione Autori</h1>
-    <form method="GET" class="d-flex gap-1">
+    <form method="GET" class="d-flex gap-1" id="searchForm">
         <input type="text" name="q" class="form-control" placeholder="Cerca per nome, cognome, nazione..." value="<?php echo htmlspecialchars($search); ?>">
         <button type="submit" class="btn">Cerca</button>
         <?php if($search): ?>
@@ -38,8 +45,9 @@ $autori = $stmt->fetchAll();
 
 <!-- Unified Page: Include Form Here -->
 <?php include '../crud/autore_form.php'; ?>
+<?php endif; ?>
 
-<div class="table-container">
+<div class="table-container" id="autoriTable">
     <table>
         <thead>
             <tr>
@@ -87,4 +95,4 @@ $autori = $stmt->fetchAll();
     </table>
 </div>
 
-<?php include '../includes/footer.php'; ?>
+<?php if (!$isAjax) include '../includes/footer.php'; ?>

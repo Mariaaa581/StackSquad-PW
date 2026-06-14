@@ -20,79 +20,60 @@ Progetto d'esame di Programmazione Web 2025-2026 — Università degli Studi di 
 
 ## Requisiti
 
-| Strumento | Versione consigliata |
-|-----------|----------------------|
-| Python | 3.12 o superiore |
+| Strumento | Versione minima |
+|-----------|-----------------|
+| Python | 3.10 |
 | pip | incluso con Python |
 | Browser | Chrome, Firefox o Edge |
 
+> Il progetto è stato sviluppato e testato con Python 3.12.
+
 ---
 
-## Installazione (Windows)
+## Installazione
 
-### 1. Clona o scarica il progetto
+### 1. Estrarre la cartella del progetto
 
-Estrai la cartella del progetto, ad esempio:
+Estrarre il contenuto dello zip in una cartella, ad esempio:
 
-```
-C:\Users\TUO_NOME\Desktop\StackSquad-PW-LOCAL
-```
+- **Windows:** `C:\Users\NomeUtente\Desktop\StackSquad-PW-Prog2`
+- **Linux/Mac:** `~/Desktop/StackSquad-PW-Prog2`
 
-### 2. Apri il terminale nella cartella del progetto
+### 2. Aprire il terminale nella cartella del progetto
 
+**Windows (PowerShell):**
 ```powershell
-cd C:\Users\TUO_NOME\Desktop\StackSquad-PW-LOCAL
+cd C:\Users\NomeUtente\Desktop\StackSquad-PW-Prog2
 ```
 
-### 3. Crea l'ambiente virtuale
-
-```powershell
-python -m venv venv
+**Linux / Mac:**
+```bash
+cd ~/Desktop/StackSquad-PW-Prog2
 ```
 
-### 4. Attiva l'ambiente virtuale
+### 3. Installare le dipendenze
 
-```powershell
-venv\Scripts\activate
-```
-
-Dovresti vedere `(venv)` all'inizio della riga di comando.
-
-### 5. Installa le dipendenze
-
-```powershell
+```bash
 pip install -r requirements.txt
 ```
 
-### 6. Prepara il database
+> Se il comando `pip` non viene riconosciuto, provare con `pip3`.
 
-```powershell
+### 4. Applicare le migrazioni del database
+
+```bash
 python manage.py migrate
 ```
 
-### 7. (Opzionale) Importa i dati dal file SQL
+> Se il comando `python` non viene riconosciuto, provare con `python3`.
 
-Se non hai già il file `db.sqlite3` con i dati:
+### 5. Avviare il server
 
-```powershell
-python manage.py load_museo_data --flush
-```
-
-### 8. Crea un utente amministratore
-
-```powershell
-python manage.py createsuperuser
-```
-
----
-
-## Avvio del server
-
-```powershell
+```bash
 python manage.py runserver
 ```
 
-Apri il browser su:
+### 6. Aprire il browser
 
 ```
 http://127.0.0.1:8000/
@@ -113,79 +94,7 @@ Per fermare il server: `Ctrl + C`
 | Temi | http://127.0.0.1:8000/temi/ |
 | Admin | http://127.0.0.1:8000/admin/ |
 
----
-
-## Immagini
-
-### Immagini di default (condivise)
-
-Tutti gli autori e le opere senza foto personalizzata usano un'unica immagine predefinita:
-
-| Tipo | Percorso |
-|------|----------|
-| Autore | `museo/static/museo/img/autori/default.jpg` |
-| Opera | `museo/static/museo/img/opere/default_opera.jpg` |
-
-### Immagini caricate dagli utenti
-
-Le foto caricate dagli utenti vengono salvate in:
-
-```
-media/img/autori/
-```
-
----
-
-## Comandi utili
-
-| Comando | Descrizione |
-|---------|-------------|
-| `python manage.py runserver` | Avvia il server di sviluppo |
-| `python manage.py migrate` | Applica le migrazioni del database |
-| `python manage.py createsuperuser` | Crea un utente admin |
-| `python manage.py load_museo_data --flush` | Importa dati da `museo_stacksquad/database/museo.sql` |
-| `python manage.py ensure_images` | Rimuove vecchi placeholder duplicati dal database |
-
----
-
-## Struttura del progetto
-
-```
-StackSquad-PW-LOCAL/
-├── manage.py                 # Punto di ingresso Django
-├── requirements.txt          # Dipendenze Python
-├── db.sqlite3                # Database SQLite
-├── media/                    # Immagini caricate dagli utenti
-├── museo/                    # Applicazione principale
-│   ├── models.py             # Modelli: Tema, Sala, Autore, Opera
-│   ├── views.py              # Logica delle pagine
-│   ├── forms.py              # Form di validazione autori
-│   ├── urls.py               # URL dell'app
-│   ├── admin.py              # Configurazione pannello admin
-│   ├── templates/museo/      # Template HTML (Bootstrap)
-│   ├── static/museo/         # CSS, JS e immagini statiche
-│   └── management/commands/  # Comandi personalizzati
-├── museo_project/            # Configurazione Django
-│   ├── settings.py
-│   └── urls.py
-└── museo_stacksquad/         # Versione PHP originale (riferimento)
-    └── database/museo.sql    # File SQL con i dati iniziali
-```
-
----
-
-## Cosa condividere con il gruppo
-
-**Includere:**
-- Tutti i file del progetto
-- `db.sqlite3` (database con dati)
-- `media/` (immagini caricate)
-- `requirements.txt`
-
-**Non includere:**
-- `venv/` (ognuno crea il proprio ambiente virtuale)
-- `__pycache__/`
-- `.cursor/`
+Il database è già incluso nella zip con 100 autori, 215 opere, 10 sale e 10 temi.
 
 ---
 
@@ -193,23 +102,42 @@ StackSquad-PW-LOCAL/
 
 | Problema | Soluzione |
 |----------|-----------|
-| `python` non riconosciuto | Reinstalla Python con l'opzione **Add Python to PATH** |
-| Le immagini non si vedono | Riavvia il server e premi `Ctrl + F5` nel browser |
-| Errore upload immagine | Esegui `pip install Pillow` |
-| Porta 8000 occupata | Usa `python manage.py runserver 8001` |
-| Database vuoto | Esegui `python manage.py load_museo_data --flush` |
+| `python` non riconosciuto | Usare `python3` al posto di `python` |
+| `pip` non riconosciuto | Usare `pip3` al posto di `pip` |
+| Le immagini non si vedono | Premere `Ctrl + F5` nel browser per svuotare la cache |
+| Errore durante `pip install` | Eseguire `pip install --upgrade pip` e riprovare |
+| Porta 8000 occupata | Usare `python manage.py runserver 8001` e aprire `http://127.0.0.1:8001/` |
+| Database vuoto | Eseguire `python manage.py load_museo_data --flush` |
+
+---
+
+## Struttura del progetto
+
+```
+StackSquad-PW-Prog2/
+├── manage.py                 # Punto di ingresso Django
+├── requirements.txt          # Dipendenze Python
+├── db.sqlite3                # Database SQLite (già popolato)
+├── media/                    # Immagini caricate dagli utenti
+├── museo/                    # Applicazione principale
+│   ├── models.py             # Modelli: Tema, Sala, Autore, Opera
+│   ├── views.py              # Logica delle pagine e API AJAX
+│   ├── forms.py              # Form di validazione autori
+│   ├── urls.py               # URL dell'app
+│   ├── admin.py              # Configurazione pannello admin
+│   ├── templates/museo/      # Template HTML con Bootstrap 5
+│   ├── static/museo/         # CSS, JS e immagini statiche
+│   └── management/commands/  # Comandi di gestione personalizzati
+└── museo_project/            # Configurazione Django
+    ├── settings.py
+    └── urls.py
+```
 
 ---
 
 ## Tecnologie utilizzate
 
-- **Backend:** Django 6
+- **Backend:** Django 5 (Python)
 - **Database:** SQLite
 - **Frontend:** Bootstrap 5, jQuery
 - **Immagini:** Pillow
-
----
-
-## Licenza
-
-Progetto accademico — Università degli Studi di Bergamo, a.a. 2025-2026.

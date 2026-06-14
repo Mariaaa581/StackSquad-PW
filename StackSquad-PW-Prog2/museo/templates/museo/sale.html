@@ -3,45 +3,74 @@
 {% block title %}Sale - Museo StackSquad{% endblock %}
 
 {% block content %}
-<div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4">
-    <h1 class="h2 mb-0">Ricerca Sale</h1>
-    <form method="get" class="d-flex gap-2 flex-grow-1 flex-md-grow-0" style="max-width: 500px;">
-        <input type="text" name="q" class="form-control" placeholder="Cerca per nome o tema..." value="{{ search }}">
-        <button type="submit" class="btn btn-primary">Cerca</button>
+<div class="d-flex align-items-center justify-content-between mb-3">
+    <h1 class="h3 fw-semibold mb-0">
+        <i class="bi bi-door-open me-2" style="color:var(--primario);"></i>Sale
+    </h1>
+</div>
+
+<div class="search-bar d-flex align-items-center mb-4">
+    <form method="get" class="d-flex gap-2 flex-grow-1">
+        <div class="input-group">
+            <span class="input-group-text bg-white border-end-0">
+                <i class="bi bi-search text-muted"></i>
+            </span>
+            <input type="text" name="q" class="form-control border-start-0"
+                   placeholder="Cerca per nome sala o tema..."
+                   value="{{ search }}">
+        </div>
+        <button type="submit" class="btn btn-primary px-3" style="background:var(--primario);border-color:var(--primario);">
+            Cerca
+        </button>
         {% if search %}
-            <a href="{% url 'museo:sale' %}" class="btn btn-outline-danger">Reset</a>
+            <a href="{% url 'museo:sale' %}" class="btn btn-outline-danger">
+                <i class="bi bi-x-lg"></i>
+            </a>
         {% endif %}
     </form>
 </div>
 
-<div class="table-responsive shadow-sm rounded">
-    <table class="table table-hover table-striped mb-0">
-        <thead class="table-dark">
-            <tr>
-                <th>Numero Sala</th>
-                <th>Nome</th>
-                <th>Superficie (m²)</th>
-                <th>Tema</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for s in sale %}
-            <tr>
-                <td><a href="{% url 'museo:sala_detail' s.numero %}">{{ s.numero }}</a></td>
-                <td>{{ s.nome }}</td>
-                <td>{{ s.superficie }}</td>
-                <td>
-                    {% if s.temaSala %}
-                        <a href="{% url 'museo:tema_detail' s.temaSala.codice %}">{{ s.temaSala.descrizione }}</a>
-                    {% else %}
-                        <span class="text-muted">Nessun Tema</span>
-                    {% endif %}
-                </td>
-            </tr>
-            {% empty %}
-            <tr><td colspan="4" class="text-center text-muted py-4">Nessuna sala trovata.</td></tr>
-            {% endfor %}
-        </tbody>
-    </table>
+<div class="card shadow-sm">
+    <div class="table-responsive">
+        <table class="table table-hover mb-0">
+            <thead>
+                <tr>
+                    <th>N. Sala</th>
+                    <th>Nome</th>
+                    <th>Superficie (m²)</th>
+                    <th>Tema</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for s in sale %}
+                <tr>
+                    <td>
+                        <a href="{% url 'museo:sala_detail' s.numero %}" class="fw-medium text-decoration-none">
+                            {{ s.numero }}
+                        </a>
+                    </td>
+                    <td>{{ s.nome }}</td>
+                    <td>{{ s.superficie }} m²</td>
+                    <td>
+                        {% if s.temaSala %}
+                            <a href="{% url 'museo:tema_detail' s.temaSala.codice %}" class="text-decoration-none">
+                                <i class="bi bi-tag me-1 text-muted"></i>{{ s.temaSala.descrizione }}
+                            </a>
+                        {% else %}
+                            <span class="text-muted small fst-italic">Nessun tema</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="4" class="text-center text-muted py-5">
+                        <i class="bi bi-search fs-2 d-block mb-2"></i>
+                        Nessuna sala trovata.
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 </div>
 {% endblock %}

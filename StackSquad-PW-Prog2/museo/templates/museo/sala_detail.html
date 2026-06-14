@@ -1,44 +1,93 @@
 {% extends 'museo/base.html' %}
 
-{% block title %}Sala {{ sala.numero }} - Museo StackSquad{% endblock %}
+{% block title %}Sala {{ sala.numero }} - {{ sala.nome }} - Museo StackSquad{% endblock %}
 
 {% block content %}
-<div class="card shadow-sm">
-    <div class="card-body p-4">
-        <h1 class="h2 mb-4">Dettagli Sala</h1>
+<div class="mb-3">
+    <a href="{% url 'museo:sale' %}" class="text-decoration-none text-muted small">
+        <i class="bi bi-arrow-left me-1"></i> Torna alle Sale
+    </a>
+</div>
 
-        <table class="table table-bordered">
-            <tr><th style="width: 30%;">Numero Sala</th><td>{{ sala.numero }}</td></tr>
-            <tr><th>Nome</th><td>{{ sala.nome }}</td></tr>
-            <tr><th>Superficie</th><td>{{ sala.superficie }} m²</td></tr>
-            <tr><th>Tema Associato</th>
+<div class="card shadow-sm mb-4">
+    <div class="card-body p-4">
+        <h1 class="h3 fw-semibold mb-4">
+            <i class="bi bi-door-open me-2" style="color:var(--primario);"></i>{{ sala.nome }}
+        </h1>
+
+        <table class="table table-bordered detail-table">
+            <tr>
+                <th>Numero Sala</th>
+                <td><strong>{{ sala.numero }}</strong></td>
+            </tr>
+            <tr>
+                <th>Nome</th>
+                <td>{{ sala.nome }}</td>
+            </tr>
+            <tr>
+                <th>Superficie</th>
+                <td>{{ sala.superficie }} m²</td>
+            </tr>
+            <tr>
+                <th>Tema Associato</th>
                 <td>
                     {% if sala.temaSala %}
-                        <a href="{% url 'museo:tema_detail' sala.temaSala.codice %}">{{ sala.temaSala.descrizione }}</a>
+                        <a href="{% url 'museo:tema_detail' sala.temaSala.codice %}" class="text-decoration-none">
+                            <i class="bi bi-tag me-1"></i>{{ sala.temaSala.descrizione }}
+                        </a>
                     {% else %}
-                        <span class="text-muted">Nessun Tema</span>
+                        <span class="text-muted fst-italic">Nessun tema associato</span>
                     {% endif %}
                 </td>
             </tr>
         </table>
-
-        <h2 class="h4 mt-4">Opere Esposte in questa Sala ({{ opere|length }})</h2>
-        {% if opere %}
-            <ul class="list-group list-group-flush">
-                {% for o in opere %}
-                <li class="list-group-item">
-                    <a href="{% url 'museo:opera_detail' o.codice %}"><strong>{{ o.titolo }}</strong></a>
-                    di <a href="{% url 'museo:autore_detail' o.autore.codice %}">{{ o.autore.nome }} {{ o.autore.cognome }}</a>
-                </li>
-                {% endfor %}
-            </ul>
-        {% else %}
-            <p class="text-muted">Nessuna opera attualmente esposta in questa sala.</p>
-        {% endif %}
-
-        <div class="mt-4">
-            <a href="{% url 'museo:sale' %}" class="btn btn-outline-primary">Torna alla Lista Sale</a>
-        </div>
     </div>
+</div>
+
+<!-- Opere esposte -->
+<div class="card shadow-sm">
+    <div class="card-header bg-white py-3">
+        <h2 class="h5 fw-semibold mb-0">
+            <i class="bi bi-image me-2" style="color:var(--primario);"></i>
+            Opere Esposte <span class="badge bg-secondary ms-1">{{ opere|length }}</span>
+        </h2>
+    </div>
+    {% if opere %}
+    <div class="table-responsive">
+        <table class="table table-hover mb-0">
+            <thead>
+                <tr>
+                    <th>Titolo</th>
+                    <th>Autore</th>
+                    <th>Tipo</th>
+                    <th>Anno</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for o in opere %}
+                <tr>
+                    <td>
+                        <a href="{% url 'museo:opera_detail' o.codice %}" class="text-decoration-none fw-medium">
+                            {{ o.titolo }}
+                        </a>
+                    </td>
+                    <td>
+                        <a href="{% url 'museo:autore_detail' o.autore.codice %}" class="text-decoration-none text-muted">
+                            {{ o.autore.nome }} {{ o.autore.cognome }}
+                        </a>
+                    </td>
+                    <td><span class="badge bg-light text-dark">{{ o.tipo }}</span></td>
+                    <td>{{ o.annoRealizzazione }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <div class="card-body text-muted text-center py-4">
+        <i class="bi bi-image fs-2 d-block mb-2"></i>
+        Nessuna opera attualmente esposta in questa sala.
+    </div>
+    {% endif %}
 </div>
 {% endblock %}

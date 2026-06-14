@@ -3,49 +3,101 @@
 {% block title %}Home - Museo StackSquad{% endblock %}
 
 {% block content %}
-<div class="card shadow-sm border-0">
-    <div class="card-body text-center p-5">
-        <h1 class="display-5 fw-semibold mb-3">Benvenuto nel Museo StackSquad</h1>
-        <p class="text-muted mb-4">Pannello di controllo e statistiche generali.</p>
+<div class="mb-4">
+    <h1 class="h3 fw-semibold mb-1">Benvenuto nel Museo StackSquad</h1>
+    <p class="text-muted mb-0">Pannello di controllo del sistema di gestione museale.</p>
+</div>
 
-        <div class="row g-4">
-            <div class="col-md-6 col-lg-3">
-                <div class="card h-100 border-0 bg-light">
-                    <div class="card-body">
-                        <h3 class="h5">Autori</h3>
-                        <p class="display-6 text-primary fw-bold">{{ tot_autori }}</p>
-                        <a href="{% url 'museo:autori' %}" class="btn btn-primary btn-sm">Gestisci Autori</a>
-                    </div>
+<div class="row g-3 mb-4">
+    <div class="col-sm-6 col-xl-3">
+        <div class="card stat-card shadow-sm h-100">
+            <div class="card-body d-flex align-items-center gap-3">
+                <div class="rounded-circle d-flex align-items-center justify-content-center"
+                     style="width:52px;height:52px;background:#eef2f7;flex-shrink:0;">
+                    <i class="bi bi-person-badge fs-4" style="color:var(--primario);"></i>
+                </div>
+                <div>
+                    <p class="text-muted small mb-0">Autori</p>
+                    <p class="fs-3 fw-bold mb-0" style="color:var(--primario);">{{ tot_autori }}</p>
                 </div>
             </div>
-            <div class="col-md-6 col-lg-3">
-                <div class="card h-100 border-0 bg-light">
-                    <div class="card-body">
-                        <h3 class="h5">Opere</h3>
-                        <p class="display-6 text-primary fw-bold">{{ tot_opere }}</p>
-                        <a href="{% url 'museo:opere' %}" class="btn btn-primary btn-sm">Vedi Opere</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6 col-lg-3">
-                <div class="card h-100 border-0 bg-light">
-                    <div class="card-body">
-                        <h3 class="h5">Sale</h3>
-                        <p class="display-6 text-primary fw-bold">{{ tot_sale }}</p>
-                        <a href="{% url 'museo:sale' %}" class="btn btn-primary btn-sm">Vedi Sale</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6 col-lg-3">
-                <div class="card h-100 border-0 bg-light">
-                    <div class="card-body">
-                        <h3 class="h5">Temi</h3>
-                        <p class="display-6 text-primary fw-bold">{{ tot_temi }}</p>
-                        <a href="{% url 'museo:temi' %}" class="btn btn-primary btn-sm">Vedi Temi</a>
-                    </div>
-                </div>
+            <div class="card-footer bg-transparent border-0 pt-0 pb-3 px-3">
+                <a href="{% url 'museo:autori' %}" class="btn btn-sm btn-outline-secondary w-100">
+                    Gestisci <i class="bi bi-arrow-right ms-1"></i>
+                </a>
             </div>
         </div>
+    </div>
+    <div class="col-sm-6 col-xl-3">
+        <div class="card stat-card shadow-sm h-100">
+            <div class="card-body d-flex align-items-center gap-3">
+                <div class="rounded-circle d-flex align-items-center justify-content-center"
+                     style="width:52px;height:52px;background:#eef2f7;flex-shrink:0;">
+                    <i class="bi bi-image fs-4" style="color:var(--primario);"></i>
+                </div>
+                <div>
+                    <p class="text-muted small mb-0">Opere</p>
+                    <p class="fs-3 fw-bold mb-0" style="color:var(--primario);">{{ tot_opere }}</p>
+                </div>
+            </div>
+            <div class="card-footer bg-transparent border-0 pt-0 pb-3 px-3">
+                <a href="{% url 'museo:opere' %}" class="btn btn-sm btn-outline-secondary w-100">
+                    Vedi <i class="bi bi-arrow-right ms-1"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-xl-3">
+        <div class="card stat-card shadow-sm h-100">
+            <div class="card-body d-flex align-items-center gap-3">
+                <div class="rounded-circle d-flex align-items-center justify-content-center"
+                     style="width:52px;height:52px;background:#eef2f7;flex-shrink:0;">
+                    <i class="bi bi-door-open fs-4" style="color:var(--primario);"></i>
+                </div>
+                <div>
+                    <p class="text-muted small mb-0">Sale</p>
+                    <p class="fs-3 fw-bold mb-0" style="color:var(--primario);">{{ tot_sale }}</p>
+                </div>
+            </div>
+            <div class="card-footer bg-transparent border-0 pt-0 pb-3 px-3">
+                <a href="{% url 'museo:sale' %}" class="btn btn-sm btn-outline-secondary w-100">
+                    Vedi <i class="bi bi-arrow-right ms-1"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-xl-3">
+        <div class="card stat-card shadow-sm h-100">
+            <div class="card-body d-flex align-items-center gap-3">
+                <div class="rounded-circle d-flex align-items-center justify-content-center"
+                     style="width:52px;height:52px;background:#eef2f7;flex-shrink:0;">
+                    <i class="bi bi-tags fs-4" style="color:var(--primario);"></i>
+                </div>
+                <div>
+                    <p class="text-muted small mb-0">Temi</p>
+                    <p class="fs-3 fw-bold mb-0" style="color:var(--primario);">{{ tot_temi }}</p>
+                </div>
+            </div>
+            <div class="card-footer bg-transparent border-0 pt-0 pb-3 px-3">
+                <a href="{% url 'museo:temi' %}" class="btn btn-sm btn-outline-secondary w-100">
+                    Vedi <i class="bi bi-arrow-right ms-1"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card shadow-sm">
+    <div class="card-body p-4">
+        <h5 class="fw-semibold mb-3">
+            <i class="bi bi-info-circle me-2" style="color:var(--primario);"></i>Come navigare il museo
+        </h5>
+        <ul class="text-muted mb-0">
+            <li class="mb-1">Usa la barra laterale sinistra per accedere alle sezioni.</li>
+            <li class="mb-1">Nella sezione <strong>Autori</strong> puoi aggiungere, modificare o eliminare le schede.</li>
+            <li class="mb-1">Cerca <strong>Opere</strong> per titolo o cognome autore.</li>
+            <li class="mb-1">Sfoglia le <strong>Sale</strong> e i <strong>Temi</strong> del museo.</li>
+        </ul>
     </div>
 </div>
 {% endblock %}

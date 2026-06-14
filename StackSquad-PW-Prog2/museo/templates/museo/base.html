@@ -6,41 +6,98 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Museo StackSquad{% endblock %}</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{% static 'museo/css/style.css' %}">
     {% block extra_css %}{% endblock %}
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm">
-        <div class="container">
-            <a class="navbar-brand fw-semibold" href="{% url 'museo:index' %}">Museo StackSquad</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="mainNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item"><a class="nav-link" href="{% url 'museo:autori' %}">Autori</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{% url 'museo:opere' %}">Opere</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{% url 'museo:sale' %}">Sale</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{% url 'museo:temi' %}">Temi</a></li>
-                </ul>
-            </div>
+
+<div class="d-flex min-vh-100" id="wrapper">
+
+    <!-- Sidebar -->
+    <nav id="sidebar" class="d-flex flex-column flex-shrink-0">
+        <a href="{% url 'museo:index' %}" class="brand-link d-flex align-items-center gap-2 px-3 py-4 text-decoration-none">
+            <i class="bi bi-bank2 fs-5"></i>
+            <span class="fw-semibold">Museo StackSquad</span>
+        </a>
+        <hr class="my-0 mx-0">
+        <ul class="nav nav-pills flex-column mt-2 px-2 flex-grow-1">
+            <li class="nav-item">
+                <a href="{% url 'museo:index' %}"
+                   class="nav-link sidebar-link {% if request.resolver_match.url_name == 'index' %}active{% endif %}">
+                    <i class="bi bi-house-door"></i> Home
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="{% url 'museo:autori' %}"
+                   class="nav-link sidebar-link {% if 'autor' in request.resolver_match.url_name %}active{% endif %}">
+                    <i class="bi bi-person-badge"></i> Autori
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="{% url 'museo:opere' %}"
+                   class="nav-link sidebar-link {% if 'oper' in request.resolver_match.url_name %}active{% endif %}">
+                    <i class="bi bi-image"></i> Opere
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="{% url 'museo:sale' %}"
+                   class="nav-link sidebar-link {% if 'sala' in request.resolver_match.url_name or request.resolver_match.url_name == 'sale' %}active{% endif %}">
+                    <i class="bi bi-door-open"></i> Sale
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="{% url 'museo:temi' %}"
+                   class="nav-link sidebar-link {% if 'tema' in request.resolver_match.url_name or request.resolver_match.url_name == 'temi' %}active{% endif %}">
+                    <i class="bi bi-tags"></i> Temi
+                </a>
+            </li>
+        </ul>
+        <div class="px-2 pb-3">
+            <a href="/admin/" class="nav-link sidebar-link text-muted small">
+                <i class="bi bi-shield-lock"></i> Area Admin
+            </a>
         </div>
     </nav>
 
-    <main class="container py-4">
-        {% block content %}{% endblock %}
-    </main>
+    <!-- Page content -->
+    <div class="d-flex flex-column flex-grow-1 overflow-auto">
 
-    <footer class="footer mt-auto py-4 bg-light border-top">
-        <div class="container text-center text-muted small">
-            <p class="mb-1">Progetto d'esame di Programmazione Web 2025-2026 - Università degli Studi di Bergamo</p>
-            <p class="mb-0">Professore: Paolo Fosci | Gruppo: StackSquad | Progetto Codice: 83</p>
-        </div>
-    </footer>
+        <!-- Mobile topbar -->
+        <nav class="navbar bg-white border-bottom px-3 d-lg-none">
+            <button class="btn btn-sm btn-outline-secondary me-2" id="sidebarToggle">
+                <i class="bi bi-list fs-5"></i>
+            </button>
+            <span class="fw-semibold small">Museo StackSquad</span>
+        </nav>
 
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    {% block extra_js %}{% endblock %}
+        <main class="flex-grow-1 p-4">
+            {% if messages %}
+                {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} alert-dismissible fade show mb-3" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+                {% endfor %}
+            {% endif %}
+            {% block content %}{% endblock %}
+        </main>
+
+        <footer class="border-top bg-white py-3 px-4 text-muted small text-center">
+            Progetto Programmazione Web 2025-2026 &mdash; Università degli Studi di Bergamo &mdash;
+            Prof. Paolo Fosci &mdash; Gruppo StackSquad
+        </footer>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    document.getElementById('sidebarToggle')?.addEventListener('click', function () {
+        document.getElementById('sidebar').classList.toggle('sidebar-mobile-open');
+    });
+</script>
+{% block extra_js %}{% endblock %}
 </body>
 </html>

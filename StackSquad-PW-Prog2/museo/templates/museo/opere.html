@@ -3,53 +3,84 @@
 {% block title %}Opere - Museo StackSquad{% endblock %}
 
 {% block content %}
-<div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4">
-    <h1 class="h2 mb-0">Ricerca Opere</h1>
-    <form method="get" class="d-flex gap-2 flex-grow-1 flex-md-grow-0" style="max-width: 500px;">
-        <input type="text" name="q" class="form-control" placeholder="Cerca per titolo o cognome autore..." value="{{ search }}">
-        <button type="submit" class="btn btn-primary">Cerca</button>
+<div class="d-flex align-items-center justify-content-between mb-3">
+    <h1 class="h3 fw-semibold mb-0">
+        <i class="bi bi-image me-2" style="color:var(--primario);"></i>Opere
+    </h1>
+</div>
+
+<div class="search-bar d-flex align-items-center mb-4">
+    <form method="get" class="d-flex gap-2 flex-grow-1">
+        <div class="input-group">
+            <span class="input-group-text bg-white border-end-0">
+                <i class="bi bi-search text-muted"></i>
+            </span>
+            <input type="text" name="q" class="form-control border-start-0"
+                   placeholder="Cerca per titolo o cognome autore..."
+                   value="{{ search }}">
+        </div>
+        <button type="submit" class="btn btn-primary px-3" style="background:var(--primario);border-color:var(--primario);">
+            Cerca
+        </button>
         {% if search %}
-            <a href="{% url 'museo:opere' %}" class="btn btn-outline-danger">Reset</a>
+            <a href="{% url 'museo:opere' %}" class="btn btn-outline-danger">
+                <i class="bi bi-x-lg"></i>
+            </a>
         {% endif %}
     </form>
 </div>
 
-<div class="table-responsive shadow-sm rounded">
-    <table class="table table-hover table-striped mb-0">
-        <thead class="table-dark">
-            <tr>
-                <th>Codice</th>
-                <th>Titolo</th>
-                <th>Autore</th>
-                <th>Tipo</th>
-                <th>Anno Realizzazione</th>
-                <th>Anno Acquisto</th>
-                <th>Sala d'Esposizione</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for o in opere %}
-            <tr>
-                <td><strong>#{{ o.codice }}</strong></td>
-                <td><a href="{% url 'museo:opera_detail' o.codice %}">{{ o.titolo }}</a></td>
-                <td><a href="{% url 'museo:autore_detail' o.autore.codice %}">{{ o.autore.nome }} {{ o.autore.cognome }}</a></td>
-                <td>{{ o.tipo }}</td>
-                <td>{{ o.annoRealizzazione }}</td>
-                <td>{{ o.annoAcquisto }}</td>
-                <td>
-                    {% if o.espostaInSala %}
-                        <a href="{% url 'museo:sala_detail' o.espostaInSala.numero %}">
-                            {{ o.espostaInSala.nome }} (N. {{ o.espostaInSala.numero }})
+<div class="card shadow-sm">
+    <div class="table-responsive">
+        <table class="table table-hover mb-0">
+            <thead>
+                <tr>
+                    <th>Codice</th>
+                    <th>Titolo</th>
+                    <th>Autore</th>
+                    <th>Tipo</th>
+                    <th>Anno Realiz.</th>
+                    <th>Anno Acquisto</th>
+                    <th>Sala</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for o in opere %}
+                <tr>
+                    <td class="text-muted small">#{{ o.codice }}</td>
+                    <td>
+                        <a href="{% url 'museo:opera_detail' o.codice %}" class="text-decoration-none fw-medium">
+                            {{ o.titolo }}
                         </a>
-                    {% else %}
-                        <span class="text-muted fst-italic">Non Esposta (Archivio)</span>
-                    {% endif %}
-                </td>
-            </tr>
-            {% empty %}
-            <tr><td colspan="7" class="text-center text-muted py-4">Nessuna opera trovata.</td></tr>
-            {% endfor %}
-        </tbody>
-    </table>
+                    </td>
+                    <td>
+                        <a href="{% url 'museo:autore_detail' o.autore.codice %}" class="text-decoration-none text-muted">
+                            {{ o.autore.nome }} {{ o.autore.cognome }}
+                        </a>
+                    </td>
+                    <td><span class="badge bg-light text-dark">{{ o.tipo }}</span></td>
+                    <td>{{ o.annoRealizzazione }}</td>
+                    <td>{{ o.annoAcquisto }}</td>
+                    <td>
+                        {% if o.espostaInSala %}
+                            <a href="{% url 'museo:sala_detail' o.espostaInSala.numero %}" class="text-decoration-none">
+                                <i class="bi bi-door-open me-1"></i>{{ o.espostaInSala.nome }}
+                            </a>
+                        {% else %}
+                            <span class="text-muted fst-italic small">Archivio</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="7" class="text-center text-muted py-5">
+                        <i class="bi bi-search fs-2 d-block mb-2"></i>
+                        Nessuna opera trovata.
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 </div>
 {% endblock %}

@@ -4,59 +4,120 @@
 {% block title %}{{ autore.nome }} {{ autore.cognome }} - Museo StackSquad{% endblock %}
 
 {% block content %}
+<div class="mb-3">
+    <a href="{% url 'museo:autori' %}" class="text-decoration-none text-muted small">
+        <i class="bi bi-arrow-left me-1"></i> Torna agli Autori
+    </a>
+</div>
+
 <div class="card shadow-sm">
     <div class="card-body p-4">
-        <h1 class="h2 mb-4">Dettagli Autore</h1>
+        <h1 class="h3 fw-semibold mb-4">
+            <i class="bi bi-person-badge me-2" style="color:var(--primario);"></i>{{ autore.nome }} {{ autore.cognome }}
+        </h1>
 
-        <div class="mb-4">
-            {% if autore.pathImmagine|custom_image %}
-                <img src="{{ MEDIA_URL }}{{ autore.pathImmagine }}"
-                     alt="Foto autore {{ autore.nome }} {{ autore.cognome }}"
-                     class="img-thumbnail" style="max-width: 260px;"
-                     onerror="this.onerror=null;this.src='{% static 'museo/img/autori/default.jpg' %}';">
-            {% else %}
-                <img src="{% static 'museo/img/autori/default.jpg' %}"
-                     alt="Foto autore {{ autore.nome }} {{ autore.cognome }}"
-                     class="img-thumbnail" style="max-width: 260px;">
-            {% endif %}
-        </div>
+        <div class="row g-4">
+            <!-- Immagine -->
+            <div class="col-md-3 text-center">
+                {% if autore.pathImmagine|custom_image %}
+                    <img src="{{ MEDIA_URL }}{{ autore.pathImmagine }}"
+                         alt="Foto di {{ autore.nome }} {{ autore.cognome }}"
+                         class="img-thumbnail shadow-sm w-100"
+                         style="max-width:220px;"
+                         onerror="this.onerror=null;this.src='{% static 'museo/img/autori/default.jpg' %}';">
+                {% else %}
+                    <img src="{% static 'museo/img/autori/default.jpg' %}"
+                         alt="Foto di {{ autore.nome }} {{ autore.cognome }}"
+                         class="img-thumbnail shadow-sm w-100"
+                         style="max-width:220px;">
+                {% endif %}
+            </div>
 
-        <table class="table table-bordered">
-            <tr><th style="width: 30%;">Codice</th><td><strong>#{{ autore.codice }}</strong></td></tr>
-            <tr><th>Nome e Cognome</th><td>{{ autore.nome }} {{ autore.cognome }}</td></tr>
-            <tr><th>Nazione</th><td>{{ autore.nazione }}</td></tr>
-            <tr><th>Data di Nascita</th><td>{{ autore.dataNascita|date:"Y-m-d" }}</td></tr>
-            <tr><th>Stato</th>
-                <td>
-                    {% if autore.tipo == 'vivo' %}
-                        <span class="badge bg-success">Vivo</span>
-                    {% else %}
-                        <span class="badge bg-secondary">Morto</span>
+            <!-- Dati -->
+            <div class="col-md-9">
+                <table class="table table-bordered detail-table">
+                    <tr>
+                        <th>Codice</th>
+                        <td><strong>#{{ autore.codice }}</strong></td>
+                    </tr>
+                    <tr>
+                        <th>Nome</th>
+                        <td>{{ autore.nome }}</td>
+                    </tr>
+                    <tr>
+                        <th>Cognome</th>
+                        <td>{{ autore.cognome }}</td>
+                    </tr>
+                    <tr>
+                        <th>Nazione</th>
+                        <td><i class="bi bi-geo-alt me-1 text-muted"></i>{{ autore.nazione }}</td>
+                    </tr>
+                    <tr>
+                        <th>Data di Nascita</th>
+                        <td>{{ autore.dataNascita|date:"d/m/Y" }}</td>
+                    </tr>
+                    <tr>
+                        <th>Stato</th>
+                        <td>
+                            {% if autore.tipo == 'vivo' %}
+                                <span class="badge rounded-pill" style="background:#d1fae5;color:#065f46;">
+                                    <i class="bi bi-circle-fill me-1" style="font-size:0.5rem;"></i>Vivo
+                                </span>
+                            {% else %}
+                                <span class="badge rounded-pill bg-light text-secondary">Morto</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% if autore.tipo == 'morto' %}
+                    <tr>
+                        <th>Data di Morte</th>
+                        <td>{{ autore.dataMorte|date:"d/m/Y" }}</td>
+                    </tr>
                     {% endif %}
-                </td>
-            </tr>
-            {% if autore.tipo == 'morto' %}
-            <tr><th>Data di Morte</th><td>{{ autore.dataMorte|date:"Y-m-d" }}</td></tr>
-            {% endif %}
-        </table>
-
-        <h2 class="h4 mt-4">Opere Realizzate ({{ opere|length }})</h2>
-        {% if opere %}
-            <ul class="list-group list-group-flush">
-                {% for o in opere %}
-                <li class="list-group-item">
-                    <a href="{% url 'museo:opera_detail' o.codice %}"><strong>{{ o.titolo }}</strong></a>
-                    ({{ o.annoRealizzazione }}) - {{ o.tipo }}
-                </li>
-                {% endfor %}
-            </ul>
-        {% else %}
-            <p class="text-muted">Nessuna opera registrata per questo autore.</p>
-        {% endif %}
-
-        <div class="mt-4">
-            <a href="{% url 'museo:autori' %}" class="btn btn-outline-primary">Torna alla Lista Autori</a>
+                </table>
+            </div>
         </div>
     </div>
+</div>
+
+<!-- Opere dell'autore -->
+<div class="card shadow-sm mt-4">
+    <div class="card-header bg-white py-3">
+        <h2 class="h5 fw-semibold mb-0">
+            <i class="bi bi-image me-2" style="color:var(--primario);"></i>
+            Opere Realizzate <span class="badge bg-secondary ms-1">{{ opere|length }}</span>
+        </h2>
+    </div>
+    {% if opere %}
+    <div class="table-responsive">
+        <table class="table table-hover mb-0">
+            <thead>
+                <tr>
+                    <th>Titolo</th>
+                    <th>Tipo</th>
+                    <th>Anno Realizzazione</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for o in opere %}
+                <tr>
+                    <td>
+                        <a href="{% url 'museo:opera_detail' o.codice %}" class="text-decoration-none fw-medium">
+                            {{ o.titolo }}
+                        </a>
+                    </td>
+                    <td><span class="badge bg-light text-dark">{{ o.tipo }}</span></td>
+                    <td>{{ o.annoRealizzazione }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <div class="card-body text-muted text-center py-4">
+        <i class="bi bi-image fs-2 d-block mb-2"></i>
+        Nessuna opera registrata per questo autore.
+    </div>
+    {% endif %}
 </div>
 {% endblock %}

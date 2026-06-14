@@ -1,0 +1,51 @@
+{% extends 'museo/base.html' %}
+{% load static museo_tags %}
+
+{% block title %}{{ opera.titolo }} - Museo StackSquad{% endblock %}
+
+{% block content %}
+<div class="card shadow-sm">
+    <div class="card-body p-4">
+        <h1 class="h2 mb-4">Dettagli Opera</h1>
+
+        <div class="mb-4">
+            {% if opera.pathImmagine|custom_image %}
+                <img src="{{ MEDIA_URL }}{{ opera.pathImmagine }}"
+                     alt="Immagine opera {{ opera.titolo }}"
+                     class="img-thumbnail" style="max-width: 320px;"
+                     onerror="this.onerror=null;this.src='{% static 'museo/img/opere/default_opera.jpg' %}';">
+            {% else %}
+                <img src="{% static 'museo/img/opere/default_opera.jpg' %}"
+                     alt="Immagine opera {{ opera.titolo }}"
+                     class="img-thumbnail" style="max-width: 320px;">
+            {% endif %}
+        </div>
+
+        <table class="table table-bordered">
+            <tr><th style="width: 30%;">Codice</th><td><strong>#{{ opera.codice }}</strong></td></tr>
+            <tr><th>Titolo</th><td><strong>{{ opera.titolo }}</strong></td></tr>
+            <tr><th>Autore</th>
+                <td><a href="{% url 'museo:autore_detail' opera.autore.codice %}">{{ opera.autore.nome }} {{ opera.autore.cognome }}</a></td>
+            </tr>
+            <tr><th>Tipo</th><td>{{ opera.tipo }}</td></tr>
+            <tr><th>Anno Realizzazione</th><td>{{ opera.annoRealizzazione }}</td></tr>
+            <tr><th>Anno Acquisto</th><td>{{ opera.annoAcquisto }}</td></tr>
+            <tr><th>Esposta In</th>
+                <td>
+                    {% if opera.espostaInSala %}
+                        <a href="{% url 'museo:sala_detail' opera.espostaInSala.numero %}">
+                            {{ opera.espostaInSala.nome }} (Sala N. {{ opera.espostaInSala.numero }})
+                        </a>
+                    {% else %}
+                        <span class="text-muted fst-italic">Archivio (Non Esposta)</span>
+                    {% endif %}
+                </td>
+            </tr>
+        </table>
+
+        <div class="mt-4">
+            <a href="{% url 'museo:opere' %}" class="btn btn-outline-primary">Torna alla Lista Opere</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

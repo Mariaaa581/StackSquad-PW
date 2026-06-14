@@ -1,0 +1,27 @@
+/* Stili personalizzati del Museo StackSquad */
+body {
+    font-family: 'Inter', sans-serif;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+main {
+    flex: 1;
+}
+
+.navbar-brand {
+    letter-spacing: 0.02em;
+}
+
+.table th {
+    white-space: nowrap;
+}
+
+.card {
+    border-radius: 0.75rem;
+}
+
+.footer {
+    margin-top: auto;
+}

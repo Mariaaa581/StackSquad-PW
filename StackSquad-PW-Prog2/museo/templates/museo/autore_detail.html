@@ -1,0 +1,62 @@
+{% extends 'museo/base.html' %}
+{% load static museo_tags %}
+
+{% block title %}{{ autore.nome }} {{ autore.cognome }} - Museo StackSquad{% endblock %}
+
+{% block content %}
+<div class="card shadow-sm">
+    <div class="card-body p-4">
+        <h1 class="h2 mb-4">Dettagli Autore</h1>
+
+        <div class="mb-4">
+            {% if autore.pathImmagine|custom_image %}
+                <img src="{{ MEDIA_URL }}{{ autore.pathImmagine }}"
+                     alt="Foto autore {{ autore.nome }} {{ autore.cognome }}"
+                     class="img-thumbnail" style="max-width: 260px;"
+                     onerror="this.onerror=null;this.src='{% static 'museo/img/autori/default.jpg' %}';">
+            {% else %}
+                <img src="{% static 'museo/img/autori/default.jpg' %}"
+                     alt="Foto autore {{ autore.nome }} {{ autore.cognome }}"
+                     class="img-thumbnail" style="max-width: 260px;">
+            {% endif %}
+        </div>
+
+        <table class="table table-bordered">
+            <tr><th style="width: 30%;">Codice</th><td><strong>#{{ autore.codice }}</strong></td></tr>
+            <tr><th>Nome e Cognome</th><td>{{ autore.nome }} {{ autore.cognome }}</td></tr>
+            <tr><th>Nazione</th><td>{{ autore.nazione }}</td></tr>
+            <tr><th>Data di Nascita</th><td>{{ autore.dataNascita|date:"Y-m-d" }}</td></tr>
+            <tr><th>Stato</th>
+                <td>
+                    {% if autore.tipo == 'vivo' %}
+                        <span class="badge bg-success">Vivo</span>
+                    {% else %}
+                        <span class="badge bg-secondary">Morto</span>
+                    {% endif %}
+                </td>
+            </tr>
+            {% if autore.tipo == 'morto' %}
+            <tr><th>Data di Morte</th><td>{{ autore.dataMorte|date:"Y-m-d" }}</td></tr>
+            {% endif %}
+        </table>
+
+        <h2 class="h4 mt-4">Opere Realizzate ({{ opere|length }})</h2>
+        {% if opere %}
+            <ul class="list-group list-group-flush">
+                {% for o in opere %}
+                <li class="list-group-item">
+                    <a href="{% url 'museo:opera_detail' o.codice %}"><strong>{{ o.titolo }}</strong></a>
+                    ({{ o.annoRealizzazione }}) - {{ o.tipo }}
+                </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p class="text-muted">Nessuna opera registrata per questo autore.</p>
+        {% endif %}
+
+        <div class="mt-4">
+            <a href="{% url 'museo:autori' %}" class="btn btn-outline-primary">Torna alla Lista Autori</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

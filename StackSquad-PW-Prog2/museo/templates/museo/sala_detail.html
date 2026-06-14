@@ -1,0 +1,44 @@
+{% extends 'museo/base.html' %}
+
+{% block title %}Sala {{ sala.numero }} - Museo StackSquad{% endblock %}
+
+{% block content %}
+<div class="card shadow-sm">
+    <div class="card-body p-4">
+        <h1 class="h2 mb-4">Dettagli Sala</h1>
+
+        <table class="table table-bordered">
+            <tr><th style="width: 30%;">Numero Sala</th><td>{{ sala.numero }}</td></tr>
+            <tr><th>Nome</th><td>{{ sala.nome }}</td></tr>
+            <tr><th>Superficie</th><td>{{ sala.superficie }} m²</td></tr>
+            <tr><th>Tema Associato</th>
+                <td>
+                    {% if sala.temaSala %}
+                        <a href="{% url 'museo:tema_detail' sala.temaSala.codice %}">{{ sala.temaSala.descrizione }}</a>
+                    {% else %}
+                        <span class="text-muted">Nessun Tema</span>
+                    {% endif %}
+                </td>
+            </tr>
+        </table>
+
+        <h2 class="h4 mt-4">Opere Esposte in questa Sala ({{ opere|length }})</h2>
+        {% if opere %}
+            <ul class="list-group list-group-flush">
+                {% for o in opere %}
+                <li class="list-group-item">
+                    <a href="{% url 'museo:opera_detail' o.codice %}"><strong>{{ o.titolo }}</strong></a>
+                    di <a href="{% url 'museo:autore_detail' o.autore.codice %}">{{ o.autore.nome }} {{ o.autore.cognome }}</a>
+                </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p class="text-muted">Nessuna opera attualmente esposta in questa sala.</p>
+        {% endif %}
+
+        <div class="mt-4">
+            <a href="{% url 'museo:sale' %}" class="btn btn-outline-primary">Torna alla Lista Sale</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

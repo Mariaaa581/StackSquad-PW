@@ -1,0 +1,55 @@
+{% extends 'museo/base.html' %}
+
+{% block title %}Opere - Museo StackSquad{% endblock %}
+
+{% block content %}
+<div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4">
+    <h1 class="h2 mb-0">Ricerca Opere</h1>
+    <form method="get" class="d-flex gap-2 flex-grow-1 flex-md-grow-0" style="max-width: 500px;">
+        <input type="text" name="q" class="form-control" placeholder="Cerca per titolo o cognome autore..." value="{{ search }}">
+        <button type="submit" class="btn btn-primary">Cerca</button>
+        {% if search %}
+            <a href="{% url 'museo:opere' %}" class="btn btn-outline-danger">Reset</a>
+        {% endif %}
+    </form>
+</div>
+
+<div class="table-responsive shadow-sm rounded">
+    <table class="table table-hover table-striped mb-0">
+        <thead class="table-dark">
+            <tr>
+                <th>Codice</th>
+                <th>Titolo</th>
+                <th>Autore</th>
+                <th>Tipo</th>
+                <th>Anno Realizzazione</th>
+                <th>Anno Acquisto</th>
+                <th>Sala d'Esposizione</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for o in opere %}
+            <tr>
+                <td><strong>#{{ o.codice }}</strong></td>
+                <td><a href="{% url 'museo:opera_detail' o.codice %}">{{ o.titolo }}</a></td>
+                <td><a href="{% url 'museo:autore_detail' o.autore.codice %}">{{ o.autore.nome }} {{ o.autore.cognome }}</a></td>
+                <td>{{ o.tipo }}</td>
+                <td>{{ o.annoRealizzazione }}</td>
+                <td>{{ o.annoAcquisto }}</td>
+                <td>
+                    {% if o.espostaInSala %}
+                        <a href="{% url 'museo:sala_detail' o.espostaInSala.numero %}">
+                            {{ o.espostaInSala.nome }} (N. {{ o.espostaInSala.numero }})
+                        </a>
+                    {% else %}
+                        <span class="text-muted fst-italic">Non Esposta (Archivio)</span>
+                    {% endif %}
+                </td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="7" class="text-center text-muted py-4">Nessuna opera trovata.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

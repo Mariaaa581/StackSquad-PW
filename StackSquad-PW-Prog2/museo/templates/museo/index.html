@@ -1,0 +1,51 @@
+{% extends 'museo/base.html' %}
+
+{% block title %}Home - Museo StackSquad{% endblock %}
+
+{% block content %}
+<div class="card shadow-sm border-0">
+    <div class="card-body text-center p-5">
+        <h1 class="display-5 fw-semibold mb-3">Benvenuto nel Museo StackSquad</h1>
+        <p class="text-muted mb-4">Pannello di controllo e statistiche generali.</p>
+
+        <div class="row g-4">
+            <div class="col-md-6 col-lg-3">
+                <div class="card h-100 border-0 bg-light">
+                    <div class="card-body">
+                        <h3 class="h5">Autori</h3>
+                        <p class="display-6 text-primary fw-bold">{{ tot_autori }}</p>
+                        <a href="{% url 'museo:autori' %}" class="btn btn-primary btn-sm">Gestisci Autori</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <div class="card h-100 border-0 bg-light">
+                    <div class="card-body">
+                        <h3 class="h5">Opere</h3>
+                        <p class="display-6 text-primary fw-bold">{{ tot_opere }}</p>
+                        <a href="{% url 'museo:opere' %}" class="btn btn-primary btn-sm">Vedi Opere</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <div class="card h-100 border-0 bg-light">
+                    <div class="card-body">
+                        <h3 class="h5">Sale</h3>
+                        <p class="display-6 text-primary fw-bold">{{ tot_sale }}</p>
+                        <a href="{% url 'museo:sale' %}" class="btn btn-primary btn-sm">Vedi Sale</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <div class="card h-100 border-0 bg-light">
+                    <div class="card-body">
+                        <h3 class="h5">Temi</h3>
+                        <p class="display-6 text-primary fw-bold">{{ tot_temi }}</p>
+                        <a href="{% url 'museo:temi' %}" class="btn btn-primary btn-sm">Vedi Temi</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,64 @@
+{% extends 'museo/base.html' %}
+
+{% block title %}Temi - Museo StackSquad{% endblock %}
+
+{% block content %}
+<div class="d-flex align-items-center justify-content-between mb-3">
+    <h1 class="h3 fw-semibold mb-0">
+        <i class="bi bi-tags me-2" style="color:var(--primario);"></i>Temi
+    </h1>
+</div>
+
+<div class="search-bar d-flex align-items-center mb-4">
+    <form method="get" class="d-flex gap-2 flex-grow-1">
+        <div class="input-group">
+            <span class="input-group-text bg-white border-end-0">
+                <i class="bi bi-search text-muted"></i>
+            </span>
+            <input type="text" name="q" class="form-control border-start-0"
+                   placeholder="Cerca tema..."
+                   value="{{ search }}">
+        </div>
+        <button type="submit" class="btn btn-primary px-3" style="background:var(--primario);border-color:var(--primario);">
+            Cerca
+        </button>
+        {% if search %}
+            <a href="{% url 'museo:temi' %}" class="btn btn-outline-danger">
+                <i class="bi bi-x-lg"></i>
+            </a>
+        {% endif %}
+    </form>
+</div>
+
+<div class="card shadow-sm">
+    <div class="table-responsive">
+        <table class="table table-hover mb-0">
+            <thead>
+                <tr>
+                    <th>Codice</th>
+                    <th>Descrizione</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for t in temi %}
+                <tr>
+                    <td class="text-muted small">#{{ t.codice }}</td>
+                    <td>
+                        <a href="{% url 'museo:tema_detail' t.codice %}" class="text-decoration-none fw-medium">
+                            <i class="bi bi-tag me-1 text-muted"></i>{{ t.descrizione }}
+                        </a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="2" class="text-center text-muted py-5">
+                        <i class="bi bi-search fs-2 d-block mb-2"></i>
+                        Nessun tema trovato.
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

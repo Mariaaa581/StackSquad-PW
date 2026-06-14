@@ -1,0 +1,107 @@
+{% extends 'museo/base.html' %}
+{% load static %}
+
+{% block title %}Autori - Museo StackSquad{% endblock %}
+
+{% block content %}
+<div class="d-flex align-items-center justify-content-between mb-3">
+    <h1 class="h3 fw-semibold mb-0">
+        <i class="bi bi-person-badge me-2" style="color:var(--primario);"></i>Gestione Autori
+    </h1>
+</div>
+
+<!-- Search bar -->
+<div class="search-bar d-flex align-items-center mb-4">
+    <form method="get" class="d-flex gap-2 flex-grow-1">
+        <div class="input-group">
+            <span class="input-group-text bg-white border-end-0">
+                <i class="bi bi-search text-muted"></i>
+            </span>
+            <input type="text" name="q" class="form-control border-start-0"
+                   placeholder="Cerca per nome, cognome, nazione o #codice..."
+                   value="{{ search }}">
+        </div>
+        <button type="submit" class="btn btn-primary px-3" style="background:var(--primario);border-color:var(--primario);">
+            Cerca
+        </button>
+        {% if search %}
+            <a href="{% url 'museo:autori' %}" class="btn btn-outline-danger">
+                <i class="bi bi-x-lg"></i>
+            </a>
+        {% endif %}
+    </form>
+</div>
+
+{% include 'museo/partials/autore_form.html' %}
+
+<div class="card shadow-sm">
+    <div class="table-responsive">
+        <table class="table table-hover mb-0">
+            <thead>
+                <tr>
+                    <th>Codice</th>
+                    <th>Nome e Cognome</th>
+                    <th>Nazione</th>
+                    <th>Data di Nascita</th>
+                    <th>Stato</th>
+                    <th>Data di Morte</th>
+                    <th>Azioni</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for a in autori %}
+                <tr>
+                    <td class="text-muted small">#{{ a.codice }}</td>
+                    <td>
+                        <a href="{% url 'museo:autore_detail' a.codice %}" class="fw-medium text-decoration-none">
+                            {{ a.nome }} {{ a.cognome }}
+                        </a>
+                    </td>
+                    <td>{{ a.nazione }}</td>
+                    <td>{{ a.dataNascita|date:"d/m/Y" }}</td>
+                    <td>
+                        {% if a.tipo == 'vivo' %}
+                            <span class="badge rounded-pill" style="background:#d1fae5;color:#065f46;">
+                                <i class="bi bi-circle-fill me-1" style="font-size:0.5rem;"></i>Vivo
+                            </span>
+                        {% else %}
+                            <span class="badge rounded-pill bg-light text-secondary">Morto</span>
+                        {% endif %}
+                    </td>
+                    <td>{% if a.dataMorte %}{{ a.dataMorte|date:"d/m/Y" }}{% else %}<span class="text-muted">—</span>{% endif %}</td>
+                    <td>
+                        <div class="d-flex gap-1">
+                            <button class="btn btn-sm btn-outline-primary edit-btn" data-codice="{{ a.codice }}"
+                                    title="Modifica">
+                                <i class="bi bi-pencil"></i>
+                            </button>
+                            <button class="btn btn-sm btn-outline-danger delete-btn"
+                                    data-codice="{{ a.codice }}"
+                                    data-nome="{{ a.nome }} {{ a.cognome }}"
+                                    title="Elimina">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="7" class="text-center text-muted py-5">
+                        <i class="bi bi-search fs-2 d-block mb-2"></i>
+                        Nessun autore trovato.
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    window.MUSEO_API_URL = "{% url 'museo:autore_api' %}";
+    window.MUSEO_MEDIA_URL = "{{ request.scheme }}://{{ request.get_host }}/media/";
+</script>
+<script src="{% static 'museo/js/main.js' %}"></script>
+{% endblock %}

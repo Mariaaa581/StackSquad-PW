@@ -1,0 +1,87 @@
+{% extends 'museo/base.html' %}
+{% load static museo_tags %}
+
+{% block title %}{{ opera.titolo }} - Museo StackSquad{% endblock %}
+
+{% block content %}
+<div class="mb-3">
+    <a href="{% url 'museo:opere' %}" class="text-decoration-none text-muted small">
+        <i class="bi bi-arrow-left me-1"></i> Torna alle Opere
+    </a>
+</div>
+
+<div class="card shadow-sm">
+    <div class="card-body p-4">
+        <h1 class="h3 fw-semibold mb-4">
+            <i class="bi bi-image me-2" style="color:var(--primario);"></i>{{ opera.titolo }}
+        </h1>
+
+        <div class="row g-4">
+            <!-- Immagine -->
+            <div class="col-md-3 text-center">
+                {% if opera.pathImmagine|custom_image %}
+                    <img src="{{ MEDIA_URL }}{{ opera.pathImmagine }}"
+                         alt="{{ opera.titolo }}"
+                         class="img-thumbnail shadow-sm w-100"
+                         style="max-width:260px;"
+                         onerror="this.onerror=null;this.src='{% static 'museo/img/opere/default_opera.jpg' %}';">
+                {% else %}
+                    <img src="{% static 'museo/img/opere/default_opera.jpg' %}"
+                         alt="{{ opera.titolo }}"
+                         class="img-thumbnail shadow-sm w-100"
+                         style="max-width:260px;">
+                {% endif %}
+            </div>
+
+            <!-- Dati -->
+            <div class="col-md-9">
+                <table class="table table-bordered detail-table">
+                    <tr>
+                        <th>Codice</th>
+                        <td><strong>#{{ opera.codice }}</strong></td>
+                    </tr>
+                    <tr>
+                        <th>Titolo</th>
+                        <td><strong>{{ opera.titolo }}</strong></td>
+                    </tr>
+                    <tr>
+                        <th>Autore</th>
+                        <td>
+                            <a href="{% url 'museo:autore_detail' opera.autore.codice %}" class="text-decoration-none">
+                                <i class="bi bi-person me-1"></i>{{ opera.autore.nome }} {{ opera.autore.cognome }}
+                            </a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Tipo</th>
+                        <td><span class="badge bg-light text-dark">{{ opera.tipo }}</span></td>
+                    </tr>
+                    <tr>
+                        <th>Anno Realizzazione</th>
+                        <td>{{ opera.annoRealizzazione }}</td>
+                    </tr>
+                    <tr>
+                        <th>Anno Acquisto</th>
+                        <td>{{ opera.annoAcquisto }}</td>
+                    </tr>
+                    <tr>
+                        <th>Esposta In</th>
+                        <td>
+                            {% if opera.espostaInSala %}
+                                <a href="{% url 'museo:sala_detail' opera.espostaInSala.numero %}" class="text-decoration-none">
+                                    <i class="bi bi-door-open me-1"></i>
+                                    {{ opera.espostaInSala.nome }} (Sala N. {{ opera.espostaInSala.numero }})
+                                </a>
+                            {% else %}
+                                <span class="text-muted fst-italic">
+                                    <i class="bi bi-archive me-1"></i>Archivio (Non Esposta)
+                                </span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

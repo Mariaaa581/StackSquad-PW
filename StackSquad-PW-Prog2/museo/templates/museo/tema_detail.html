@@ -1,0 +1,81 @@
+{% extends 'museo/base.html' %}
+
+{% block title %}{{ tema.descrizione }} - Museo StackSquad{% endblock %}
+
+{% block content %}
+<div class="mb-3">
+    <a href="{% url 'museo:temi' %}" class="text-decoration-none text-muted small">
+        <i class="bi bi-arrow-left me-1"></i> Torna ai Temi
+    </a>
+</div>
+
+<div class="card shadow-sm mb-4">
+    <div class="card-body p-4">
+        <h1 class="h3 fw-semibold mb-4">
+            <i class="bi bi-tags me-2" style="color:var(--primario);"></i>{{ nome_tema }}
+        </h1>
+
+        <table class="table table-bordered detail-table">
+            <tr>
+                <th>Codice</th>
+                <td><strong>#{{ tema.codice }}</strong></td>
+            </tr>
+            <tr>
+                <th>Tema</th>
+                <td><strong>{{ nome_tema }}</strong></td>
+            </tr>
+            {% if periodo_tema %}
+            <tr>
+                <th>Periodo / Contesto</th>
+                <td>{{ periodo_tema }}</td>
+            </tr>
+            {% endif %}
+            <tr>
+                <th>Descrizione</th>
+                <td>{{ tema.descrizione }}</td>
+            </tr>
+        </table>
+    </div>
+</div>
+
+<!-- Sale associate -->
+<div class="card shadow-sm">
+    <div class="card-header bg-white py-3">
+        <h2 class="h5 fw-semibold mb-0">
+            <i class="bi bi-door-open me-2" style="color:var(--primario);"></i>
+            Sale Associate <span class="badge bg-secondary ms-1">{{ sale|length }}</span>
+        </h2>
+    </div>
+    {% if sale %}
+    <div class="table-responsive">
+        <table class="table table-hover mb-0">
+            <thead>
+                <tr>
+                    <th>N. Sala</th>
+                    <th>Nome</th>
+                    <th>Superficie</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for s in sale %}
+                <tr>
+                    <td>
+                        <a href="{% url 'museo:sala_detail' s.numero %}" class="fw-medium text-decoration-none">
+                            {{ s.numero }}
+                        </a>
+                    </td>
+                    <td>{{ s.nome }}</td>
+                    <td>{{ s.superficie }} m²</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <div class="card-body text-muted text-center py-4">
+        <i class="bi bi-door-open fs-2 d-block mb-2"></i>
+        Nessuna sala associata a questo tema.
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

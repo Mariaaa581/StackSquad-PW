@@ -1,0 +1,139 @@
+/* Museo StackSquad — stile Bootstrap + sidebar verticale */
+
+:root {
+    --primario: #33475b;
+    --primario-scuro: #243240;
+    --sidebar-width: 240px;
+    --bordo: #e5e7eb;
+}
+
+body {
+    font-family: 'Inter', Arial, sans-serif;
+    background: #f6f7f9;
+    color: #1f2933;
+}
+
+/* ── Sidebar ── */
+#sidebar {
+    width: var(--sidebar-width);
+    min-width: var(--sidebar-width);
+    background: #fff;
+    border-right: 1px solid var(--bordo);
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    z-index: 1030;
+    overflow-y: auto;
+    transition: transform 0.25s ease;
+}
+
+#wrapper {
+    padding-left: var(--sidebar-width);
+    min-height: 100vh;
+}
+
+.brand-link {
+    color: #1f2933;
+    border-bottom: 1px solid var(--bordo);
+    background: #fafbfc;
+    font-size: 0.95rem;
+}
+
+.brand-link:hover { color: var(--primario); }
+
+.sidebar-link {
+    color: #6b7280;
+    border-radius: 6px;
+    padding: 9px 12px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-size: 0.9rem;
+    border-left: 3px solid transparent;
+    transition: background 0.15s, color 0.15s;
+    text-decoration: none;
+}
+
+.sidebar-link:hover {
+    background: #f3f4f6;
+    color: var(--primario);
+    border-left-color: var(--primario);
+}
+
+.sidebar-link.active {
+    background: #eef2f7;
+    color: var(--primario);
+    border-left-color: var(--primario);
+    font-weight: 600;
+}
+
+/* ── Main content ── */
+main {
+    max-width: 1200px;
+}
+
+/* ── Tables ── */
+.table thead th {
+    background: var(--primario);
+    color: #fff;
+    font-weight: 500;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    white-space: nowrap;
+    border: none;
+}
+
+.table-hover tbody tr:hover {
+    background-color: #eef2f7;
+}
+
+/* ── Cards ── */
+.card {
+    border: 1px solid var(--bordo);
+    border-radius: 10px;
+}
+
+.stat-card {
+    border: none;
+    border-radius: 12px;
+    transition: transform 0.15s, box-shadow 0.15s;
+}
+
+.stat-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.08) !important;
+}
+
+/* ── Detail tables ── */
+.detail-table th {
+    width: 30%;
+    background: #f9fafb;
+    font-weight: 500;
+    color: var(--primario);
+}
+
+/* ── Search bar ── */
+.search-bar {
+    background: #fff;
+    border: 1px solid var(--bordo);
+    border-radius: 10px;
+    padding: 14px 18px;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+/* ── Mobile ── */
+@media (max-width: 991.98px) {
+    #sidebar {
+        transform: translateX(-100%);
+    }
+    #sidebar.sidebar-mobile-open {
+        transform: translateX(0);
+    }
+    #wrapper {
+        padding-left: 0;
+    }
+}
